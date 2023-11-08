@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size android:width="32dp" android:height="32dp" /> <!-- Adjust thumb size as needed -->
+    <solid android:color="#868686" /> <!-- Change this color -->
+    <corners android:radius="16dp" /> <!-- Rounded shape for thumb -->
+</shape>

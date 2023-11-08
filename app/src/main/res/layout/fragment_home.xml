@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".homeFragment">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@color/black"
+        android:background="@drawable/btnshadow"
+        android:text="Dictionary"
+        />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:fontFamily="@font/yujihentaiganaakariregular"
+        android:text="Menu"
+        android:textSize="70dp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnsettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@color/black"
+        android:background="@drawable/btnshadow"
+        android:text="settings" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnhotspots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@color/black"
+        android:background="@drawable/btnshadow"
+        android:text="Navigation" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnObservation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="450dp"
+        android:layout_marginEnd="50dp"
+        android:textColor="@color/black"
+        android:background="@drawable/btnshadow"
+        android:text="Observation" />
+
+
+</FrameLayout>
+

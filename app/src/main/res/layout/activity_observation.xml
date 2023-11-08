@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Observation">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/yujihentaiganaakariregular"
+        android:textSize="45dp"
+        android:layout_marginStart="30dp"
+        android:textStyle="bold"
+        android:text="Observation" />
+
+    <EditText
+        android:id="@+id/txtBirdName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/txtshape"
+        android:minHeight="48dp"
+        android:paddingStart="10dp"
+        android:textColorHint="@color/black"
+        android:ems="10"
+        android:hint="Bird Name"
+        />
+
+    <EditText
+        android:id="@+id/txtLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/txtshape"
+        android:minHeight="48dp"
+        android:paddingStart="10dp"
+        android:textColorHint="@color/black"
+        android:ems="10"
+        android:hint="Location"
+        />
+
+    <EditText
+        android:id="@+id/txtNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/txtshape"
+        android:minHeight="48dp"
+        android:paddingStart="10dp"
+        android:textColorHint="@color/black"
+        android:ems="10"
+        android:hint="Notes"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnObservation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/darkbtnbg"
+        android:text="See Observation"
+        />
+
+    <TextView
+        android:id="@+id/viewObservationsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:paddingTop="16dp"
+        android:text="No observations yet."
+        android:textSize="16sp"
+        tools:ignore="MissingConstraints" />
+</LinearLayout>
