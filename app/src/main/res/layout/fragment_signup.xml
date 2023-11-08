@@ -35,7 +35,7 @@
             android:textColorHint="@color/black"/>
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/txtLastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -50,7 +50,7 @@
             android:textColorHint="@color/black"/>
 
         <EditText
-            android:id="@+id/editTextTextPersonName3"
+            android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -65,7 +65,7 @@
             android:textColorHint="@color/black"/>
 
         <EditText
-            android:id="@+id/editTextTextPassword2"
+            android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"

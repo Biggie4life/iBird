@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "501810919151",
+    "project_id": "ibird-c3e97",
+    "storage_bucket": "ibird-c3e97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:501810919151:android:b632cba72aa708edad4d1a",
+        "android_client_info": {
+          "package_name": "com.example.ibird"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoTFuQ_kA1dL3WTACfdowJKDY3UXofMUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
