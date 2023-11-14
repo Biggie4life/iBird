@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.ibird.databinding.FragmentSignupBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -17,7 +18,8 @@ class SignupFragment : Fragment() {
 
     private lateinit var fragmentManager: FragmentManager
     private lateinit var binding: FragmentSignupBinding
-    private lateinit var database: DatabaseReference
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +29,7 @@ class SignupFragment : Fragment() {
         // Inflate the layout for this fragment using the binding object
         binding = FragmentSignupBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,6 +38,8 @@ class SignupFragment : Fragment() {
         binding.txtLogin.setOnClickListener {
             goToFragment(LoginFragment())
         }
+        auth = FirebaseAuth.getInstance()
+        databaseReference = FirebaseDatabase.getInstance().reference.child("users")
 
         binding.btnSignUp.setOnClickListener {
             // Get user data from the UI fields (e.g., name, email, password)
@@ -43,26 +48,41 @@ class SignupFragment : Fragment() {
             val Email = binding.txtEmail.text.toString()
             val Password = binding.txtPassword.text.toString()
 
-            // Encode the email address to create a valid path in the database
-            val sanitizedEmail = encodeEmail(Email)
+            if (Name.isNotEmpty() && LastName.isNotEmpty() && Email.isNotEmpty() &&
+                Password.isNotEmpty()) {
 
-            database = FirebaseDatabase.getInstance().getReference("Users")
-            val user = User(Name, LastName, sanitizedEmail, Password)
+                auth.createUserWithEmailAndPassword(Email, Password)
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        if (task.isSuccessful) {
+                            // Registration successful
+                            val user = auth.currentUser
 
-            database.child(sanitizedEmail).setValue(user).addOnSuccessListener {
-                binding.txtname.text.clear()
-                binding.txtLastName.text.clear()
-                binding.txtEmail.text.clear()
-                binding.txtPassword.text.clear()
+                            // Create a new user entry in the database
+                            val userData = User(Name, LastName, Email,Password)
 
-                Toast.makeText(requireContext(), "Register Successful", Toast.LENGTH_SHORT).show()
-                goToFragment(homeFragment())
+                            user?.let {
+                                val userId = it.uid  // Use the actual user ID from Firebase Authentication
+                                databaseReference.child(userId).setValue(userData)
+                                goToFragment(homeFragment())
+                            }
+                        } else {
+                            // Handle registration failures
+                            val errorMessage = task.exception?.localizedMessage ?: "Registration failed."
+                            Toast.makeText(
+                                requireContext(),
+                                "Error: $errorMessage",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
 
-            }.addOnFailureListener {
-                Toast.makeText(requireContext(), "Registration Failed", Toast.LENGTH_SHORT).show()
+            }else {
+                // Handle empty fields or other registration errors
+                Toast.makeText(requireContext(), "Failed to register.", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
     private fun goToFragment(fragment: Fragment) {
         fragmentManager = requireActivity().supportFragmentManager // Use requireActivity() to get the Activity's FragmentManager
@@ -70,8 +90,5 @@ class SignupFragment : Fragment() {
             replace(R.id.fragment_container, fragment)
             addToBackStack(null) // Add this line if you want to enable back navigation
         }
-    }
-    private fun encodeEmail(email: String): String {
-        return email.replace(".", ",")
     }
 }

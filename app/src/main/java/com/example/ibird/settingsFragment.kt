@@ -12,8 +12,12 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat.recreate
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
-class settingsFragment : Fragment(){
+class settingsFragment : Fragment() {
+
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,55 +46,52 @@ class settingsFragment : Fragment(){
             requireActivity().recreate() // Recreate the activity to apply the new mode
         }
 
-    // Handle unit selection (metric or imperial)
-    unitRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-        when (checkedId) {
-            R.id.metricRadioButton -> {
-                // Handle metric selection
-                saveUnitPreference("metric")
+        // Handle unit selection (metric or imperial)
+        unitRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.metricRadioButton -> {
+                    // Handle metric selection
+                    saveUnitPreference("metric")
+                }
+                R.id.imperialRadioButton -> {
+                    // Handle imperial selection
+                    saveUnitPreference("imperial")
+                }
             }
-            R.id.imperialRadioButton -> {
-                // Handle imperial selection
-                saveUnitPreference("imperial")
+        }
+
+        // Handle maximum distance selection
+        distanceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                // Update the displayed distance value
+                distanceTextView.text = "Maximum Distance: $progress km"
+                // Save the distance preference
+                saveDistancePreference(progress)
             }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Not used
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                // Not used
+            }
+        })
+
+        return view
+    }
+
+    private fun saveUnitPreference(unit: String) {
+        uid?.let {
+            // Save the selected unit (metric or imperial) to Firebase Realtime Database under the user's UID
+            FirebaseDatabase.getInstance().getReference("userSettings/$it/unit").setValue(unit)
         }
     }
 
-
-    // Handle maximum distance selection
-    distanceSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-            // Update the displayed distance value
-            distanceTextView.text = "Maximum Distance: $progress km"
-            // Save the distance preference
-            saveDistancePreference(progress)
+    private fun saveDistancePreference(distance: Int) {
+        uid?.let {
+            // Save the selected maximum distance to Firebase Realtime Database under the user's UID
+            FirebaseDatabase.getInstance().getReference("userSettings/$it/distance").setValue(distance)
         }
-
-        override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            // Not used
-        }
-
-        override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            // Not used
-        }
-    })
-
-    return view
     }
-
-private fun saveUnitPreference(unit: String) {
-    // Save the selected unit (metric or imperial) to SharedPreferences or other storage
-    val preferences = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-    val editor = preferences.edit()
-    editor.putString("unit", unit)
-    editor.apply()
-}
-
-private fun saveDistancePreference(distance: Int) {
-    // Save the selected maximum distance to SharedPreferences or other storage
-    val preferences = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE)
-    val editor = preferences.edit()
-    editor.putInt("distance", distance)
-    editor.apply()
-}
 }

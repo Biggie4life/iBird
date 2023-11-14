@@ -53,6 +53,11 @@ class LoginFragment : Fragment() {
             goToFragment(SignupFragment())
         }
 
+        binding.tvForgotPassword.setOnClickListener {
+            val  intent = Intent(requireContext(), ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun loginUser() {
@@ -62,36 +67,25 @@ class LoginFragment : Fragment() {
         val email = emailEditText?.text.toString()
         val password = passwordEditText?.text.toString()
 
-        val sanitizedEmail = encodeEmail(email)
-
-        userReference.child(sanitizedEmail)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val user = dataSnapshot.getValue(User::class.java)
-                    if (user != null && user.password == password) {
-                        // Authentication successful, navigate to the next screen (e.g., homeFragment).
-                        val fragment = homeFragment() // Assuming you have a HomeFragment class.
-                        parentFragmentManager.commit {
-                            replace(R.id.fragment_container, fragment)
-                            addToBackStack(null) // Add this line if you want to enable back navigation
-                        }
+        if (email.isNotEmpty() && password.isNotEmpty()) {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Login successful
+                        goToFragment(homeFragment())
                     } else {
-                        Toast.makeText(requireContext(), "Login failed", Toast.LENGTH_SHORT).show()
+                        // Handle login failures
+                        Toast.makeText(
+                            requireContext(),
+                            "Failed to login. Check your email and password.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Error retrieving user data",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-    }
-
-    private fun encodeEmail(email: String): String {
-        return email.replace(".", ",")
+        } else {
+            // Handle empty fields or other login errors
+            Toast.makeText(requireContext(), "Please enter email and password.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun goToFragment(fragment: Fragment) {

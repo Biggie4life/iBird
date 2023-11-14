@@ -31,7 +31,7 @@ class homeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set an onClickListener for the tvsignup TextView
+
         binding.btnDic.setOnClickListener {
             goToFragment(DictionaryFragment())
         }
@@ -48,6 +48,10 @@ class homeFragment : Fragment() {
         binding.btnObservation.setOnClickListener {
             val intent = Intent(requireContext(), Observation::class.java)
             startActivity(intent)
+        }
+
+        binding.btnnav.setOnClickListener {
+            goToFragment(HotsSpotFragment())
         }
     }
 
